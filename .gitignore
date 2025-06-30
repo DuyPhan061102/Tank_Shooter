@@ -1,3 +1,4 @@
 SFML/
 .vscode/
 *.exe
+sfml-*.dll
