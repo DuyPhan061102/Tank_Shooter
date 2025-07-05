@@ -8,4 +8,4 @@ all: compile
 
 compile:	
 	mkdir -p bin
-	g++ -std=c++11 ./src/*.cpp -I$(SFML_PATH)/include -o bin/tank_battle -L$(SFML_PATH)/lib -lsfml-graphics -lsfml-window -lsfml-system
+	g++ -std=c++11 ./src/*.cpp -I$(SFML_PATH)/include -o phong -L$(SFML_PATH)/lib -lsfml-graphics -lsfml-window -lsfml-system
