@@ -1,15 +1,15 @@
-#ifndef GAME_H
-#define GAME_H
-
+// Game.h
+#pragma once
 #include <SFML/Graphics.hpp>
-#include "Tank.h"
-#include <vector>
+#include "PlayerTank.h"
 
 class Game {
 private:
     sf::RenderWindow window;
     sf::Clock clock;
     bool isRunning;
+
+    PlayerTank player;
 
 public:
     Game();
@@ -20,5 +20,3 @@ private:
     void update(float dt);
     void render();
 };
-
-#endif

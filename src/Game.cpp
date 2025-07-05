@@ -1,3 +1,4 @@
+// Game.cpp
 #include "Game.h"
 
 Game::Game() : window(sf::VideoMode(800, 600), "Tank Battle"), isRunning(true) {
@@ -22,11 +23,11 @@ void Game::processEvents() {
 }
 
 void Game::update(float dt) {
-    // TODO: Update player, bullets, enemies, etc.
+    player.update(dt);
 }
 
 void Game::render() {
     window.clear();
-    // TODO: Draw game objects
+    player.draw(window);
     window.display();
 }
