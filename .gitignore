@@ -3,3 +3,6 @@ SFML/
 *.exe
 sfml-*.dll
 
+phong
+Makefile
+bin/
