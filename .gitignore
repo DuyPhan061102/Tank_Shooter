@@ -2,3 +2,4 @@ SFML/
 .vscode/
 *.exe
 sfml-*.dll
+Makefile

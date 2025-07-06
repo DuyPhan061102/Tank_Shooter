@@ -16,6 +16,15 @@ Enemy::Enemy(float x, float y) {
 }
 
 void Enemy::update(float deltaTime) {
+    sf::Vector2f pos = body.getPosition();
+    sf::Vector2f size = body.getSize();
+    sf::Vector2f newPos = pos + direction * speed * deltaTime;
+
+    if (newPos.x < 0 || newPos.x + size.x > 800)
+        direction.x = -direction.x;
+    if (newPos.y < 0 || newPos.y + size.y > 600)
+        direction.y = -direction.y;
+
     body.move(direction * speed * deltaTime);
     timeSinceDirectionChange += deltaTime;
 
@@ -28,6 +37,7 @@ void Enemy::update(float deltaTime) {
         timeSinceDirectionChange = 0.f;
     }
 }
+
 
 bool Enemy::isHit(const sf::FloatRect& bounds) {
     return body.getGlobalBounds().intersects(bounds);
