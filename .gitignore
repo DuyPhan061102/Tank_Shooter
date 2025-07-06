@@ -6,3 +6,4 @@ sfml-*.dll
 phong
 Makefile
 bin/
+.DS_Store
