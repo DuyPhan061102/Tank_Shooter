@@ -2,6 +2,4 @@ SFML/
 .vscode/
 *.exe
 sfml-*.dll
-Makefile/*
-phong
-bin/
+
