@@ -2,3 +2,8 @@ SFML/
 .vscode/
 *.exe
 sfml-*.dll
+
+phong
+Makefile
+bin/
+.DS_Store

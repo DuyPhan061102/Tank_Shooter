@@ -12,7 +12,9 @@ protected:
 public:
     Tank();
     virtual void move(float dx, float dy) = 0;
-    virtual void draw(sf::RenderWindow& window);
+
+    virtual void draw(sf::RenderWindow& window) const;
+
     sf::Vector2f getPosition() const;
 };
 
