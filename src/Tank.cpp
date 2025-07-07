@@ -11,7 +11,6 @@ Tank::Tank() {
 void Tank::move(float dx, float dy) {
     body.move(dx, dy);
 }
-
 void Tank::draw(sf::RenderWindow& window) {
     window.draw(body);
 }
