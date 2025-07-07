@@ -43,7 +43,6 @@ void Game::render() {
     for (const auto& enemy : enemies) {
         enemy.draw(window);
     }
-
     window.display();
 }
 void Game::spawnEnemy() {

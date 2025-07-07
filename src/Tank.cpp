@@ -5,8 +5,7 @@ Tank::Tank() {
     body.setFillColor(sf::Color::White);
     speed = 5.0f;
 }
-
-void Tank::draw(sf::RenderWindow& window) const {
+void Tank::draw(sf::RenderWindow& window) {
     window.draw(body);
 }
 

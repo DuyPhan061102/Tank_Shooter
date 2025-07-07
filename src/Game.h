@@ -13,6 +13,7 @@ private:
     sf::Clock enemySpawnClock;
     bool isRunning;
     std::vector<Enemy> enemies;
+
 public:
     Game();
     void run();
