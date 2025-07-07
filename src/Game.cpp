@@ -1,3 +1,4 @@
+// Game.cpp
 #include "Game.h"
 #include "Enemy.h"
 #include <cstdlib> 
@@ -25,13 +26,16 @@ void Game::processEvents() {
 }
 
 void Game::update(float dt) {
-    // TODO: Update player, bullets, enemies, etc.
+    // Cập nhật player
+    player.update(dt);
+
+    // Sinh enemy mỗi 3s
     if (enemySpawnClock.getElapsedTime().asSeconds() > 3.f) {
         spawnEnemy();
         enemySpawnClock.restart();
     }
 
-    // Cập nhật enemy
+    // Cập nhật vị trí enemy
     for (auto& enemy : enemies) {
         enemy.update(dt);
     }
@@ -40,11 +44,17 @@ void Game::update(float dt) {
 void Game::render() {
     window.clear();
 
+    // Vẽ player
+    player.draw(window);
+
+    // Vẽ enemy
     for (const auto& enemy : enemies) {
         enemy.draw(window);
     }
+
     window.display();
 }
+
 void Game::spawnEnemy() {
     float x = static_cast<float>(rand() % 700 + 50);
     float y = static_cast<float>(rand() % 500 + 50);

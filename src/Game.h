@@ -1,7 +1,7 @@
-#ifndef GAME_H
-#define GAME_H
-
+// Game.h
+#pragma once
 #include <SFML/Graphics.hpp>
+#include "PlayerTank.h"
 #include "Tank.h"
 #include "Enemy.h"     
 #include <vector>
@@ -14,6 +14,8 @@ private:
     bool isRunning;
     std::vector<Enemy> enemies;
 
+    PlayerTank player;
+
 public:
     Game();
     void run();
@@ -24,5 +26,3 @@ private:
     void render();
     void spawnEnemy();
 };
-
-#endif
