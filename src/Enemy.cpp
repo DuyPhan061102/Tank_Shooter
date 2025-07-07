@@ -1,7 +1,8 @@
 #include "Enemy.h"
 #include <cstdlib>
 
-Enemy::Enemy(float x, float y) {
+Enemy::Enemy(float x, float y)
+{
     body.setPosition(x, y);
     body.setSize(sf::Vector2f(40.f, 40.f));
     body.setFillColor(sf::Color::Red);
@@ -9,13 +10,18 @@ Enemy::Enemy(float x, float y) {
     timeSinceDirectionChange = 0.f;
 
     int dir = rand() % 4;
-    if (dir == 0) direction = {1.f, 0.f};
-    else if (dir == 1) direction = {-1.f, 0.f};
-    else if (dir == 2) direction = {0.f, 1.f};
-    else direction = {0.f, -1.f};
+    if (dir == 0)
+        direction = {1.f, 0.f};
+    else if (dir == 1)
+        direction = {-1.f, 0.f};
+    else if (dir == 2)
+        direction = {0.f, 1.f};
+    else
+        direction = {0.f, -1.f};
 }
 
-void Enemy::update(float deltaTime) {
+void Enemy::update(float deltaTime)
+{
     sf::Vector2f pos = body.getPosition();
     sf::Vector2f size = body.getSize();
     sf::Vector2f newPos = pos + direction * speed * deltaTime;
@@ -28,21 +34,31 @@ void Enemy::update(float deltaTime) {
     body.move(direction * speed * deltaTime);
     timeSinceDirectionChange += deltaTime;
 
-    if (timeSinceDirectionChange > 2.f) {
+    if (timeSinceDirectionChange > 2.f)
+    {
         int dir = rand() % 4;
-        if (dir == 0) direction = {1.f, 0.f};
-        else if (dir == 1) direction = {-1.f, 0.f};
-        else if (dir == 2) direction = {0.f, 1.f};
-        else direction = {0.f, -1.f};
+        if (dir == 0)
+            direction = {1.f, 0.f};
+        else if (dir == 1)
+            direction = {-1.f, 0.f};
+        else if (dir == 2)
+            direction = {0.f, 1.f};
+        else
+            direction = {0.f, -1.f};
         timeSinceDirectionChange = 0.f;
     }
 }
+void Enemy::draw(sf::RenderWindow &window) const
+{
+    window.draw(body);
+}
 
-
-bool Enemy::isHit(const sf::FloatRect& bounds) {
+bool Enemy::isHit(const sf::FloatRect &bounds)
+{
     return body.getGlobalBounds().intersects(bounds);
 }
 
-void Enemy::move(float dx, float dy) {
+void Enemy::move(float dx, float dy)
+{
     body.move(dx, dy);
 }

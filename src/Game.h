@@ -3,10 +3,11 @@
 #include <SFML/Graphics.hpp>
 #include "PlayerTank.h"
 #include "Tank.h"
-#include "Enemy.h"     
+#include "Enemy.h"
 #include <vector>
 
-class Game {
+class Game
+{
 private:
     sf::RenderWindow window;
     sf::Clock clock;

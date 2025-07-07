@@ -1,17 +1,16 @@
-// Tank.cpp
 #include "Tank.h"
 
-Tank::Tank() {
+Tank::Tank()
+{
     body.setSize(sf::Vector2f(40.f, 40.f));
     body.setFillColor(sf::Color::White);
     body.setPosition(100.f, 100.f);
     speed = 100.f;
 }
 
-void Tank::move(float dx, float dy) {
-    body.move(dx, dy);
-}
-void Tank::draw(sf::RenderWindow& window) {
+// ❌ Không cần hàm move vì nó là pure virtual và do lớp con định nghĩa
+
+void Tank::draw(sf::RenderWindow &window) const {
     window.draw(body);
 }
 
