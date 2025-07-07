@@ -1,8 +1,3 @@
-SFML/
-.vscode/
-*.exe
-sfml-*.dll
-
 # IDE
 .vs/
 .vscode/
@@ -42,4 +37,7 @@ openal32.dll
 Thumbs.db
 
 # Project-specific ignores
-/assets/*.txt  # Bỏ qua file txt trong assets
+/assets/*.txt
+Makefile
+bin/
+phong
