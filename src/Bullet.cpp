@@ -13,7 +13,7 @@ void Bullet::update(float dt)
 	shape.move(direction * speed * dt);
 }
 
-void Bullet::draw(sf::RenderWindow &window)
+void Bullet::draw(sf::RenderWindow &window) const
 {
 	window.draw(shape);
 }

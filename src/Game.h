@@ -4,6 +4,7 @@
 #include "PlayerTank.h"
 #include "Tank.h"
 #include "Enemy.h"
+#include "Bullet.h"
 #include <vector>
 
 class Game
@@ -12,9 +13,10 @@ private:
     sf::RenderWindow window;
     sf::Clock clock;
     sf::Clock enemySpawnClock;
+
     bool isRunning;
     std::vector<Enemy> enemies;
-
+    std::vector<Bullet> bullets;
     PlayerTank player;
 
 public:
