@@ -7,6 +7,17 @@ Game::Game() : window(sf::VideoMode(800, 600), "Tank Battle"), isRunning(true)
 {
     window.setFramerateLimit(60);
     std::srand(static_cast<unsigned>(time(nullptr)));
+   font.loadFromFile("Arial.ttf");
+//Phần hiện thị chữ "GAME OVER" khi kết thúc trò chơi - Phong
+    if (!font.loadFromFile("arial.ttf"))
+    {
+    }
+
+    gameOverText.setFont(font);
+    gameOverText.setString("GAME OVER");
+    gameOverText.setCharacterSize(48);
+    gameOverText.setFillColor(sf::Color::Red);
+    gameOverText.setPosition(250.f, 250.f);
 }
 
 void Game::run()
@@ -32,6 +43,7 @@ void Game::processEvents()
 
 void Game::update(float dt)
 {
+     if (!isRunning) return; // Ngưng cập nhật - Phong
     // Cập nhật player
     player.update(dt);
     // -- BẮN ĐẠN nếu nhấn phím SPACE --////////////////////
@@ -95,7 +107,17 @@ void Game::update(float dt)
         if (!bulletErased)
             ++b;
     }
-    ////////////////////
+    // Va chạm với enemy - Phong
+    sf::FloatRect playerBounds(player.getPosition().x, player.getPosition().y, 40.f, 40.f);
+
+    for (auto& enemy : enemies)
+    {
+        if (enemy.isHit(playerBounds))
+        {
+            isRunning = false;
+            break;
+        }
+    }
 }
 
 void Game::render()
@@ -114,6 +136,10 @@ void Game::render()
     for (const auto &enemy : enemies)
     {
         enemy.draw(window);
+    }
+    if (!isRunning)
+    {
+        window.draw(gameOverText); // ➕ Hiển thị chữ khi thua - Phong
     }
 
     window.display();
