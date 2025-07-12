@@ -18,6 +18,9 @@ private:
     std::vector<Enemy> enemies;
     std::vector<Bullet> bullets;
     PlayerTank player;
+    int score;
+    sf::Font font;
+    sf::Text scoreText;
 
 public:
     Game();

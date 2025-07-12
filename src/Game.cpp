@@ -6,6 +6,18 @@
 Game::Game() : window(sf::VideoMode(800, 600), "Tank Battle"), isRunning(true)
 {
     window.setFramerateLimit(60);
+    score = 0;
+
+    if (!font.loadFromFile("assets/arial.ttf")) {
+        // Nếu cần xử lý lỗi thì thêm vào đây
+    }
+
+    scoreText.setFont(font);
+    scoreText.setCharacterSize(24);
+    scoreText.setFillColor(sf::Color::White);
+    scoreText.setPosition(10.f, 10.f);
+    scoreText.setString("Score: 0");
+
     std::srand(static_cast<unsigned>(time(nullptr)));
 }
 
@@ -85,6 +97,8 @@ void Game::update(float dt)
                 e = enemies.erase(e);
                 b = bullets.erase(b);
                 bulletErased = true;
+                score += 100;
+                scoreText.setString("Score: " + std::to_string(score));
                 break;
             }
             else
@@ -115,6 +129,7 @@ void Game::render()
     {
         enemy.draw(window);
     }
+    window.draw(scoreText);
 
     window.display();
 }
