@@ -19,6 +19,9 @@ private:
     std::vector<Bullet> bullets;
     PlayerTank player;
 
+    sf::Texture backgroundTexture;   // ảnh nền
+    sf::Sprite backgroundSprite;     // sprite để vẽ ảnh
+
 public:
     Game();
     void run();
