@@ -19,6 +19,8 @@ private:
     std::vector<Enemy> enemies;
     std::vector<Bullet> bullets;
     PlayerTank player;
+    sf::Font font;            
+    sf::Text gameOverText;
 
     // Âm thanh
     sf::SoundBuffer shootBuffer;
