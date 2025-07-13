@@ -1,12 +1,12 @@
 // Game.h
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "PlayerTank.h"
 #include "Tank.h"
 #include "Enemy.h"
 #include "Bullet.h"
 #include <vector>
-#include <SFML/Audio.hpp> 
 
 class Game
 {
@@ -19,8 +19,14 @@ private:
     std::vector<Enemy> enemies;
     std::vector<Bullet> bullets;
     PlayerTank player;
-    sf::Font font;            
+
+    // Văn bản
+    sf::Font font;
+    sf::Text scoreText;
     sf::Text gameOverText;
+
+    // Điểm số
+    int score = 0;
 
     // Âm thanh
     sf::SoundBuffer shootBuffer;
