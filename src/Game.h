@@ -20,6 +20,10 @@ private:
     std::vector<Bullet> bullets;
     PlayerTank player;
 
+  // ảnh nền
+    sf::Texture backgroundTexture;   // ảnh nền
+    sf::Sprite backgroundSprite;     // sprite để vẽ ảnh
+
     // Văn bản
     sf::Font font;
     sf::Text scoreText;
@@ -33,6 +37,7 @@ private:
     sf::SoundBuffer explosionBuffer;
     sf::Sound shootSound;
     sf::Sound explosionSound;
+
 
 public:
     Game();

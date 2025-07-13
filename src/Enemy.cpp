@@ -11,13 +11,13 @@ Enemy::Enemy(float x, float y)
 
     int dir = rand() % 4;
     if (dir == 0)
-        direction = {1.f, 0.f};
+        direction = { 1.f, 0.f };
     else if (dir == 1)
-        direction = {-1.f, 0.f};
+        direction = { -1.f, 0.f };
     else if (dir == 2)
-        direction = {0.f, 1.f};
+        direction = { 0.f, 1.f };
     else
-        direction = {0.f, -1.f};
+        direction = { 0.f, -1.f };
 }
 
 void Enemy::update(float deltaTime)
@@ -38,24 +38,44 @@ void Enemy::update(float deltaTime)
     {
         int dir = rand() % 4;
         if (dir == 0)
-            direction = {1.f, 0.f};
+            direction = { 1.f, 0.f };
         else if (dir == 1)
-            direction = {-1.f, 0.f};
+            direction = { -1.f, 0.f };
         else if (dir == 2)
-            direction = {0.f, 1.f};
+            direction = { 0.f, 1.f };
         else
-            direction = {0.f, -1.f};
+            direction = { 0.f, -1.f };
         timeSinceDirectionChange = 0.f;
     }
+
+    // THAY ĐỔI: Nếu đang trúng đạn, sau 0.2s thì đánh dấu đã chết
+    if (isHitEffect && hitClock.getElapsedTime().asSeconds() > 0.2f)
+    {
+        isDead = true;
+    }
 }
-void Enemy::draw(sf::RenderWindow &window) const
+
+void Enemy::draw(sf::RenderWindow& window) const
 {
     window.draw(body);
 }
 
-bool Enemy::isHit(const sf::FloatRect &bounds)
+bool Enemy::isHit(const sf::FloatRect& bounds)
 {
-    return body.getGlobalBounds().intersects(bounds);
+    if (!isHitEffect && body.getGlobalBounds().intersects(bounds)) // tránh bị trúng đạn 2 lần
+    {
+        body.setFillColor(sf::Color::White); // THAY ĐỔI: màu hiệu ứng
+        isHitEffect = true;
+        hitClock.restart();
+        return true;
+    }
+    return false;
+}
+
+// THAY ĐỔI: Hàm mới
+bool Enemy::shouldBeRemoved() const
+{
+    return isDead;
 }
 
 void Enemy::move(float dx, float dy)

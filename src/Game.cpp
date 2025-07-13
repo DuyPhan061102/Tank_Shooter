@@ -6,10 +6,26 @@
 Game::Game() : window(sf::VideoMode(800, 600), "Tank Battle"), isRunning(true)
 {
     window.setFramerateLimit(60);
+      std::srand(static_cast<unsigned>(time(nullptr)));
     score = 0;
+  
+  // tai background
+    if (!backgroundTexture.loadFromFile("assets/Images/background.jpg"))
+    {
+  std::cout << "❌ Không thể tải background.jpg\n";
+    }
+    else
+    {
+        backgroundSprite.setTexture(backgroundTexture);
+        backgroundSprite.setScale(
+            window.getSize().x / backgroundSprite.getLocalBounds().width,
+            window.getSize().y / backgroundSprite.getLocalBounds().height);
 
+    }
+  
+// tai font
     if (!font.loadFromFile("assets/arial.ttf")) {
-        // Nếu cần xử lý lỗi thì thêm vào đây
+   std::cout << "❌ Không thể tải font arial.ttf\n";
     }
 
     scoreText.setFont(font);
@@ -17,13 +33,6 @@ Game::Game() : window(sf::VideoMode(800, 600), "Tank Battle"), isRunning(true)
     scoreText.setFillColor(sf::Color::White);
     scoreText.setPosition(10.f, 10.f);
     scoreText.setString("Score: 0");
-
-    std::srand(static_cast<unsigned>(time(nullptr)));
-
-    // Tải font
-    if (!font.loadFromFile("assets/Fonts/arial.ttf")) {
-        std::cout << "❌ Không thể tải font arial.ttf\n";
-    }
 
     gameOverText.setFont(font);
     gameOverText.setString("GAME OVER");
@@ -75,6 +84,8 @@ void Game::update(float dt)
 
     player.update(dt);
 
+    // -- BẮN ĐẠN nếu nhấn phím SPACE --
+  
     static sf::Clock shootClock;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
     {
@@ -88,17 +99,23 @@ void Game::update(float dt)
         }
     }
 
+    // Sinh enemy mỗi 3s
     if (enemySpawnClock.getElapsedTime().asSeconds() > 3.f)
     {
         spawnEnemy();
         enemySpawnClock.restart();
     }
 
+
+    // Cập nhật vị trí enemy
+
     for (auto& enemy : enemies)
     {
         enemy.update(dt);
     }
 
+
+    // -- Cập nhật vị trí đạn --
     for (auto& bullet : bullets)
     {
         bullet.update(dt);
@@ -108,31 +125,45 @@ void Game::update(float dt)
         [this](const Bullet& b)
         {
             return b.isOffScreen(window);
-        }), bullets.end());
+        }),
+        bullets.end());
+
+    // -- Va chạm giữa đạn và enemy --
+    // THAY ĐỔI: không xóa enemy tại đây, để nó có thời gian hiện hiệu ứng
 
     for (auto b = bullets.begin(); b != bullets.end();)
     {
         bool bulletErased = false;
-        for (auto e = enemies.begin(); e != enemies.end();)
+        for (auto& enemy : enemies)
         {
-            if (e->isHit(b->getBounds()))
+            if (enemy.isHit(b->getBounds()))
             {
+                b = bullets.erase(b); // Xoá đạn
                 explosionSound.play();
-                e = enemies.erase(e);
-                b = bullets.erase(b);
-                bulletErased = true;
+              
+       
+            enemy.markToRemove(); // cần thêm phương thức này trong Enemy
+            bulletErased = true;
+
+              
+              
+             
                 score += 100;
                 scoreText.setString("Score: " + std::to_string(score));
                 break;
-            }
-            else {
-                ++e;
             }
         }
         if (!bulletErased)
             ++b;
     }
 
+
+    // THAY ĐỔI: xoá enemy đã chết sau hiệu ứng
+    enemies.erase(
+        std::remove_if(enemies.begin(), enemies.end(),
+            [](const Enemy& e) { return e.shouldBeRemoved(); }),
+        enemies.end());
+  // va ham voii nguoi choi
     sf::FloatRect playerBounds(player.getPosition().x, player.getPosition().y, 40.f, 40.f);
     for (auto& enemy : enemies)
     {
@@ -142,12 +173,14 @@ void Game::update(float dt)
             break;
         }
     }
+
 }
 
 void Game::render()
 {
     window.clear();
-
+    window.draw(backgroundSprite);
+    // Vẽ player
     player.draw(window);
 
     for (const auto& bullet : bullets)
@@ -155,10 +188,14 @@ void Game::render()
         bullet.draw(window);
     }
 
+
+    // Vẽ enemy
+
     for (const auto& enemy : enemies)
     {
         enemy.draw(window);
     }
+  
     window.draw(scoreText);
 
     if (!isRunning)
