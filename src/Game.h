@@ -6,6 +6,7 @@
 #include "Enemy.h"
 #include "Bullet.h"
 #include <vector>
+#include <SFML/Audio.hpp> 
 
 class Game
 {
@@ -18,6 +19,12 @@ private:
     std::vector<Enemy> enemies;
     std::vector<Bullet> bullets;
     PlayerTank player;
+
+    // Âm thanh
+    sf::SoundBuffer shootBuffer;
+    sf::SoundBuffer explosionBuffer;
+    sf::Sound shootSound;
+    sf::Sound explosionSound;
 
 public:
     Game();

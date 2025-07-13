@@ -1,4 +1,5 @@
 // Game.cpp
+#include <iostream> 
 #include "Game.h"
 #include "Enemy.h"
 #include <cstdlib>
@@ -7,6 +8,28 @@ Game::Game() : window(sf::VideoMode(800, 600), "Tank Battle"), isRunning(true)
 {
     window.setFramerateLimit(60);
     std::srand(static_cast<unsigned>(time(nullptr)));
+
+    // Tải âm thanh bắn
+    if (!shootBuffer.loadFromFile("assets/Sounds/shoot.wav"))
+    {
+        std::cout << "❌ Không thể tải file shoot.wav\n";
+    }
+    else
+    {
+        shootSound.setBuffer(shootBuffer);
+        shootSound.setVolume(100.f); // âm lượng tối đa
+    }
+
+    // Tải âm thanh nổ
+    if (!explosionBuffer.loadFromFile("assets/Sounds/explosion.wav"))
+    {
+        std::cout << "❌ Không thể tải file explosion.wav\n";
+    }
+    else
+    {
+        explosionSound.setBuffer(explosionBuffer);
+        explosionSound.setVolume(100.f); // âm lượng tối đa
+    }
 }
 
 void Game::run()
@@ -43,6 +66,7 @@ void Game::update(float dt)
             sf::Vector2f startPos = player.getPosition();
             sf::Vector2f dir(1.f, 0.f); // Đạn bắn sang phải
             bullets.emplace_back(startPos, dir);
+            shootSound.play();
             shootClock.restart();
         }
     }
@@ -82,6 +106,8 @@ void Game::update(float dt)
         {
             if (e->isHit(b->getBounds()))
             {
+                // Nếu va chạm, phát âm thanh nổ và xoá enemy và đạn
+                explosionSound.play();
                 e = enemies.erase(e);
                 b = bullets.erase(b);
                 bulletErased = true;
