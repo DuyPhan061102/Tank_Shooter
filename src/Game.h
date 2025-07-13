@@ -6,6 +6,7 @@
 #include "Enemy.h"
 #include "Bullet.h"
 #include <vector>
+#include <SFML/Audio.hpp> 
 
 class Game
 {
@@ -20,6 +21,12 @@ private:
     PlayerTank player;
     sf::Font font;            
     sf::Text gameOverText;
+
+    // Âm thanh
+    sf::SoundBuffer shootBuffer;
+    sf::SoundBuffer explosionBuffer;
+    sf::Sound shootSound;
+    sf::Sound explosionSound;
 
 public:
     Game();
