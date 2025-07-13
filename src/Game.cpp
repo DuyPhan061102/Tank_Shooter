@@ -1,4 +1,4 @@
-#include <iostream> 
+#include <iostream>
 #include "Game.h"
 #include "Enemy.h"
 #include <cstdlib>
@@ -6,13 +6,13 @@
 Game::Game() : window(sf::VideoMode(800, 600), "Tank Battle"), isRunning(true)
 {
     window.setFramerateLimit(60);
-      std::srand(static_cast<unsigned>(time(nullptr)));
+    std::srand(static_cast<unsigned>(time(nullptr)));
     score = 0;
-  
-  // tai background
+
+    // tai background
     if (!backgroundTexture.loadFromFile("assets/Images/background.jpg"))
     {
-  std::cout << "❌ Không thể tải background.jpg\n";
+        std::cout << "❌ Không thể tải background.jpg\n";
     }
     else
     {
@@ -20,12 +20,12 @@ Game::Game() : window(sf::VideoMode(800, 600), "Tank Battle"), isRunning(true)
         backgroundSprite.setScale(
             window.getSize().x / backgroundSprite.getLocalBounds().width,
             window.getSize().y / backgroundSprite.getLocalBounds().height);
-
     }
-  
-// tai font
-    if (!font.loadFromFile("assets/arial.ttf")) {
-   std::cout << "❌ Không thể tải font arial.ttf\n";
+
+    // tai font
+    if (!font.loadFromFile("assets/Fonts/arial.ttf"))
+    {
+        std::cout << "❌ Không thể tải font arial.ttf\n";
     }
 
     scoreText.setFont(font);
@@ -41,17 +41,23 @@ Game::Game() : window(sf::VideoMode(800, 600), "Tank Battle"), isRunning(true)
     gameOverText.setPosition(250.f, 250.f);
 
     // Tải âm thanh bắn
-    if (!shootBuffer.loadFromFile("assets/Sounds/shoot.wav")) {
+    if (!shootBuffer.loadFromFile("assets/Sounds/shoot.wav"))
+    {
         std::cout << "❌ Không thể tải file shoot.wav\n";
-    } else {
+    }
+    else
+    {
         shootSound.setBuffer(shootBuffer);
         shootSound.setVolume(100.f);
     }
 
     // Tải âm thanh nổ
-    if (!explosionBuffer.loadFromFile("assets/Sounds/explosion.wav")) {
+    if (!explosionBuffer.loadFromFile("assets/Sounds/explosion.wav"))
+    {
         std::cout << "❌ Không thể tải file explosion.wav\n";
-    } else {
+    }
+    else
+    {
         explosionSound.setBuffer(explosionBuffer);
         explosionSound.setVolume(100.f);
     }
@@ -80,12 +86,13 @@ void Game::processEvents()
 
 void Game::update(float dt)
 {
-    if (!isRunning) return;
+    if (!isRunning)
+        return;
 
     player.update(dt);
 
     // -- BẮN ĐẠN nếu nhấn phím SPACE --
-  
+
     static sf::Clock shootClock;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
     {
@@ -106,27 +113,25 @@ void Game::update(float dt)
         enemySpawnClock.restart();
     }
 
-
     // Cập nhật vị trí enemy
 
-    for (auto& enemy : enemies)
+    for (auto &enemy : enemies)
     {
         enemy.update(dt);
     }
 
-
     // -- Cập nhật vị trí đạn --
-    for (auto& bullet : bullets)
+    for (auto &bullet : bullets)
     {
         bullet.update(dt);
     }
 
     bullets.erase(std::remove_if(bullets.begin(), bullets.end(),
-        [this](const Bullet& b)
-        {
-            return b.isOffScreen(window);
-        }),
-        bullets.end());
+                                 [this](const Bullet &b)
+                                 {
+                                     return b.isOffScreen(window);
+                                 }),
+                  bullets.end());
 
     // -- Va chạm giữa đạn và enemy --
     // THAY ĐỔI: không xóa enemy tại đây, để nó có thời gian hiện hiệu ứng
@@ -134,20 +139,16 @@ void Game::update(float dt)
     for (auto b = bullets.begin(); b != bullets.end();)
     {
         bool bulletErased = false;
-        for (auto& enemy : enemies)
+        for (auto &enemy : enemies)
         {
             if (enemy.isHit(b->getBounds()))
             {
                 b = bullets.erase(b); // Xoá đạn
                 explosionSound.play();
-              
-       
-            enemy.markToRemove(); // cần thêm phương thức này trong Enemy
-            bulletErased = true;
 
-              
-              
-             
+                enemy.markToRemove(); // cần thêm phương thức này trong Enemy
+                bulletErased = true;
+
                 score += 100;
                 scoreText.setString("Score: " + std::to_string(score));
                 break;
@@ -157,15 +158,15 @@ void Game::update(float dt)
             ++b;
     }
 
-
     // THAY ĐỔI: xoá enemy đã chết sau hiệu ứng
     enemies.erase(
         std::remove_if(enemies.begin(), enemies.end(),
-            [](const Enemy& e) { return e.shouldBeRemoved(); }),
+                       [](const Enemy &e)
+                       { return e.shouldBeRemoved(); }),
         enemies.end());
-  // va ham voii nguoi choi
+    // va ham voii nguoi choi
     sf::FloatRect playerBounds(player.getPosition().x, player.getPosition().y, 40.f, 40.f);
-    for (auto& enemy : enemies)
+    for (auto &enemy : enemies)
     {
         if (enemy.isHit(playerBounds))
         {
@@ -173,7 +174,6 @@ void Game::update(float dt)
             break;
         }
     }
-
 }
 
 void Game::render()
@@ -183,19 +183,18 @@ void Game::render()
     // Vẽ player
     player.draw(window);
 
-    for (const auto& bullet : bullets)
+    for (const auto &bullet : bullets)
     {
         bullet.draw(window);
     }
 
-
     // Vẽ enemy
 
-    for (const auto& enemy : enemies)
+    for (const auto &enemy : enemies)
     {
         enemy.draw(window);
     }
-  
+
     window.draw(scoreText);
 
     if (!isRunning)

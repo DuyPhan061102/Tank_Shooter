@@ -8,16 +8,18 @@ Enemy::Enemy(float x, float y)
     body.setFillColor(sf::Color::Red);
     speed = 50.f;
     timeSinceDirectionChange = 0.f;
+    isHitEffect = false;
+    toBeRemoved = false;
 
     int dir = rand() % 4;
     if (dir == 0)
-        direction = { 1.f, 0.f };
+        direction = {1.f, 0.f};
     else if (dir == 1)
-        direction = { -1.f, 0.f };
+        direction = {-1.f, 0.f};
     else if (dir == 2)
-        direction = { 0.f, 1.f };
+        direction = {0.f, 1.f};
     else
-        direction = { 0.f, -1.f };
+        direction = {0.f, -1.f};
 }
 
 void Enemy::update(float deltaTime)
@@ -38,46 +40,48 @@ void Enemy::update(float deltaTime)
     {
         int dir = rand() % 4;
         if (dir == 0)
-            direction = { 1.f, 0.f };
+            direction = {1.f, 0.f};
         else if (dir == 1)
-            direction = { -1.f, 0.f };
+            direction = {-1.f, 0.f};
         else if (dir == 2)
-            direction = { 0.f, 1.f };
+            direction = {0.f, 1.f};
         else
-            direction = { 0.f, -1.f };
+            direction = {0.f, -1.f};
         timeSinceDirectionChange = 0.f;
     }
 
-    // THAY ĐỔI: Nếu đang trúng đạn, sau 0.2s thì đánh dấu đã chết
+    // ⏱ Sau khi trúng đạn thì chờ 0.2s rồi đánh dấu xoá
     if (isHitEffect && hitClock.getElapsedTime().asSeconds() > 0.2f)
     {
-        isDead = true;
+        toBeRemoved = true;
     }
 }
-
-void Enemy::draw(sf::RenderWindow& window) const
+void Enemy::draw(sf::RenderWindow &window) const
 {
     window.draw(body);
 }
 
-bool Enemy::isHit(const sf::FloatRect& bounds)
+bool Enemy::isHit(const sf::FloatRect &bounds)
 {
-    if (!isHitEffect && body.getGlobalBounds().intersects(bounds)) // tránh bị trúng đạn 2 lần
+    if (!isHitEffect && body.getGlobalBounds().intersects(bounds))
     {
-        body.setFillColor(sf::Color::White); // THAY ĐỔI: màu hiệu ứng
         isHitEffect = true;
+        body.setFillColor(sf::Color::White); // Hiệu ứng khi trúng đạn
         hitClock.restart();
         return true;
     }
     return false;
 }
 
-// THAY ĐỔI: Hàm mới
-bool Enemy::shouldBeRemoved() const
+void Enemy::markToRemove()
 {
-    return isDead;
+    toBeRemoved = true;
 }
 
+bool Enemy::shouldBeRemoved() const
+{
+    return toBeRemoved;
+}
 void Enemy::move(float dx, float dy)
 {
     body.move(dx, dy);
